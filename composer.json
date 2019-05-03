@@ -1,0 +1,24 @@
+{
+    "name": "constup/validator",
+    "description": "PHP validators.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Constup",
+            "email": "16638173+constup@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Constup\\Validator": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Constup\\Validator\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
