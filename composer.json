@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Constup\\Validator": "src/"
+            "Constup\\Validator\\": "src/"
         }
     },
     "autoload-dev": {
@@ -20,5 +20,8 @@
         }
     },
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "constup/code-flow": "^1.2",
+        "ext-json": "^1.6"
+    }
 }
