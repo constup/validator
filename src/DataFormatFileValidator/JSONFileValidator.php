@@ -37,6 +37,6 @@ class JSONFileValidator
             return $json_validation;
         }
 
-        return new GenericFlowMessage(true, false, null, 'SUCCESS', 'Success.', LogLevel::INFO, false, $json_validation->getPayload());
+        return FlowMessageProducer::produceSuccessWithPayload($json_validation->getPayload());
     }
 }

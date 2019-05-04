@@ -28,6 +28,6 @@ class JSONValidator
             return new GenericFlowMessage(false, false, null, 'JSON_NOT_VALID', 'The provided data is not in valid JSON format.', LogLevel::INFO, false, $data);
         }
 
-        return new GenericFlowMessage(true, false, null, 'SUCCESS', 'Success.', LogLevel::INFO, false, $json);
+        return FlowMessageProducer::produceSuccessWithPayload($json);
     }
 }
