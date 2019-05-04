@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace Constup\Validator\DataFormatFileValidator;
 
 use Constup\CodeFlow\Message\FlowMessageProducer;
+use Constup\CodeFlow\Message\GenericFlowMessage;
 use Constup\CodeFlow\Message\GenericFlowMessageInterface;
 use Constup\Validator\DataFormatValidator\JSONValidator;
 use Constup\Validator\FileValidator\FileValidator;
+use Psr\Log\LogLevel;
 
 /**
  * Class JSONFileValidator
@@ -35,6 +37,6 @@ class JSONFileValidator
             return $json_validation;
         }
 
-        return FlowMessageProducer::produceEmptySuccess();
+        return new GenericFlowMessage(true, false, null, 'SUCCESS', 'Success.', LogLevel::INFO, false, $json_validation->getPayload());
     }
 }
