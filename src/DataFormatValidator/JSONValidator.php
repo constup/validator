@@ -24,7 +24,7 @@ class JSONValidator
     public static function validateJSON(string $data): GenericFlowMessageInterface
     {
         $json = json_decode($data);
-        if ($json && $data != $json) {
+        if (!($json && $data != $json)) {
             return new GenericFlowMessage(false, false, null, 'JSON_NOT_VALID', 'The provided data is not in valid JSON format.', LogLevel::INFO, false, $data);
         }
 
