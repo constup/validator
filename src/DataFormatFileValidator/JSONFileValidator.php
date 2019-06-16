@@ -4,39 +4,68 @@ declare(strict_types = 1);
 
 namespace Constup\Validator\DataFormatFileValidator;
 
-use Constup\CodeFlow\Message\FlowMessageProducer;
-use Constup\CodeFlow\Message\GenericFlowMessage;
-use Constup\CodeFlow\Message\GenericFlowMessageInterface;
-use Constup\Validator\DataFormatValidator\JSONValidator;
-use Constup\Validator\FileValidator\FileValidator;
-use Psr\Log\LogLevel;
+use Constup\Validator\DataFormatValidator\JSONValidatorInterface;
+use Constup\Validator\Filesystem\FileValidatorInterface;
 
 /**
  * Class JSONFileValidator
  *
  * @package Constup\Validator\DataFormatFileValidator
  */
-class JSONFileValidator
+class JSONFileValidator implements JSONFileValidatorInterface
 {
+    /** @var FileValidatorInterface */
+    private $fileValidator;
+    /** @var JSONValidatorInterface */
+    private $JSONValidator;
+
     /**
-     * @param string $absolute_file_path
+     * JSONFileValidator constructor.
      *
-     * @return GenericFlowMessageInterface
+     * @param FileValidatorInterface $fileValidator
+     * @param JSONValidatorInterface $JSONValidator
      */
-    public static function validateJSONFile(string $absolute_file_path): GenericFlowMessageInterface
+    public function __construct(FileValidatorInterface $fileValidator, JSONValidatorInterface $JSONValidator)
     {
-        $file_validation = FileValidator::validateFile($absolute_file_path);
-        if (!$file_validation->isSuccess()) {
-            return $file_validation;
+        $this->fileValidator = $fileValidator;
+        $this->JSONValidator = $JSONValidator;
+    }
+
+    /**
+     * @return FileValidatorInterface
+     */
+    public function getFileValidator(): FileValidatorInterface
+    {
+        return $this->fileValidator;
+    }
+
+    /**
+     * @return JSONValidatorInterface
+     */
+    public function getJSONValidator(): JSONValidatorInterface
+    {
+        return $this->JSONValidator;
+    }
+
+    /**
+     * @param string $absoluteFilePath
+     *
+     * @return string
+     */
+    public function validateJSONFile(string $absoluteFilePath): string
+    {
+        $fileValidation = $this->getFileValidator()->validateFile($absoluteFilePath);
+        if ($fileValidation !== FileValidatorInterface::OK) {
+            return $fileValidation;
         }
 
-        $contents = file_get_contents($absolute_file_path);
+        $contents = file_get_contents($absoluteFilePath);
 
-        $json_validation = JSONValidator::validateJSON($contents);
-        if (!$json_validation->isSuccess()) {
-            return $json_validation;
+        $jsonValidation = $this->getJSONValidator()->validateJSON($contents);
+        if ($jsonValidation !== JSONValidatorInterface::OK) {
+            return $jsonValidation;
         }
 
-        return FlowMessageProducer::produceSuccessWithPayload($json_validation->getPayload());
+        return self::OK;
     }
 }

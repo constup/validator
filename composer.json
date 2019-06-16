@@ -21,7 +21,6 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "constup/code-flow": "^1.2",
         "ext-json": "^1.6"
     }
 }
